@@ -1,0 +1,995 @@
+<!doctype html>
+<html lang="hr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nešto Svoje</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,400;0,500;0,600;0,700;0,800;1,600;1,700&family=Mona+Sans:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* =========================================================
+     NESTO SVOJE, START (ponuda s izazova)
+     Paleta 1: ljubicasta + zeleni akcent. Isti stil kao NS optin, application i thank-you:
+     bedz s crvenom tackom, naslov, tajmer u okvirima, kartice,
+     zeleno dugme koje pulsira.
+     Sve je pod .eus. Atribute data-euo-* NE mijenjati: koristi ih skripta (tajmer, dugmad).
+     Rok ponude se mijenja na JEDNOM mjestu: blok "PODESAVANJA" u skripti ispod.
+     ========================================================= */
+  :root{
+    --eu-green: #6BF26B;
+    --eu-red: #E11D48;
+    --eu-ink: #0B0614;
+    --eu-font: "Inter Tight", "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --eu-font-b: "Mona Sans", "Inter Tight", system-ui, sans-serif;
+  }
+
+  html, body{ overflow-x: clip; }
+  html, body{ background: #0B0614 !important; }
+  body{ max-width: 100%; }
+
+  .eus{
+    position: relative; isolation: isolate; overflow-x: clip;
+    width: 100vw; margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw); min-height: 100vh;
+    color: #FFFFFF; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
+    background: radial-gradient(70% 520px at 50% 0, rgba(122,60,240,.20) 0%, rgba(122,60,240,0) 70%), #0B0614;
+    padding-bottom: 120px;
+  }
+  .eus *, .eus *::before, .eus *::after{ box-sizing: border-box; }
+  .eus *{ font-family: var(--eu-font) !important; }
+  .eus .badge, .eus .badge *, .eus .cd-label, .eus .cd-unit, .eus .kicker, .eus .kicker *, .eus .pp-save, .eus .eyebrow{ font-family: var(--eu-font-b) !important; }
+  .eus h1, .eus h2, .eus h3, .eus p, .eus ul{ margin: 0; padding: 0; }
+  .eus a{ text-decoration: none; }
+  .eus p, .eus li, .eus span{ text-wrap: pretty; }
+  .eus h1, .eus h2, .eus h3, .eus .cta-btn, .eus .cta-purple, .eus .status, .eus .cd-label, .eus .call-lead{ text-wrap: balance; }
+  .eus .y{ color: var(--eu-green); }
+  .eus .wrap{ position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+  /* ====================== DUGME (isto kao optin: pulsira, mekan hover) ====================== */
+  .eus .cta-btn{
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    width: 100%; max-width: 100%; min-height: 56px;
+    padding: 16px 28px; border: none; border-radius: 100px; cursor: pointer;
+    background: linear-gradient(180deg, #A8FF9C 0%, #6BF26B 100%);
+    box-shadow: 0 18px 48px rgba(107,242,107,.15);
+    color: var(--eu-ink) !important; text-decoration: none !important;
+    font-size: 18px; font-weight: 700; line-height: 1.05; text-transform: uppercase; text-align: center;
+    transition: transform .2s, box-shadow .2s;
+  }
+  @keyframes eusCtaPulse{
+    0%, 100%{ scale: 1; box-shadow: 0 18px 48px rgba(107,242,107,.15), 0 0 0 0 rgba(107,242,107,0); }
+    50%{ scale: 1.04; box-shadow: 0 18px 48px rgba(107,242,107,.32), 0 0 26px 2px rgba(107,242,107,.35); }
+  }
+  .eus .cta-btn{
+    animation: eusCtaPulse 2s ease-in-out infinite;
+    transition: transform .6s cubic-bezier(.22,1,.36,1), filter .6s ease;
+  }
+  @media (hover: hover) and (pointer: fine){
+    .eus .cta-btn:hover{
+      animation-play-state: paused;
+      transform: scale(1.05);
+      filter: drop-shadow(0 0 16px rgba(107,242,107,.38));
+    }
+  }
+  @media (prefers-reduced-motion: reduce){ .eus .cta-btn{ animation: none; transition: none; } }
+  /* kad ponuda istekne: sva dugmad sivo i neaktivno */
+  .eus .cta-btn.is-expired{ pointer-events: none; opacity: .56; filter: grayscale(1) brightness(.72); animation: none; }
+
+  /* ====================== HERO ====================== */
+  .eus .beam{
+    position: absolute; top: -160px; width: 220px; height: 760px; pointer-events: none; z-index: 0;
+    background: linear-gradient(180deg, rgba(122,60,240,.45) 0%, rgba(122,60,240,.14) 45%, rgba(122,60,240,0) 85%);
+    filter: blur(24px); opacity: .5;
+  }
+  .eus .hero{ max-width: 1052px; margin: 0 auto; padding: 64px 0 0; text-align: center; }
+  .eus .badge{
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 9px 18px; border-radius: 999px;
+    border: 1px solid rgba(122,60,240,.35); background: rgba(46,23,96,.55);
+    font-weight: 600; font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: #EDE6FF;
+  }
+  .eus .badge .dot{
+    width: 8px; height: 8px; border-radius: 50%; background: var(--eu-red); flex-shrink: 0;
+    box-shadow: 0 0 0 4px rgba(225,29,72,.22), 0 0 12px rgba(225,29,72,.8);
+  }
+  .eus .h1{
+    margin: 24px auto 0; max-width: 1040px; color: #FFFFFF;
+    font-weight: 600; font-size: clamp(34px, 4.4vw, 58px); line-height: 1.1; letter-spacing: -.025em;
+  }
+
+  /* tajmer: stoji u kartici ispod dugmeta i linka za rate. Crvenkast (okvir, sjaj i oznake), da se osjeti da vrijeme istice. */
+  .eus .cd-label{ margin-top: 26px; color: #FF9DB0; font-size: 13px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; }
+  .eus .countdown{ display: flex; justify-content: center; gap: 8px; margin-top: 10px; }
+  .eus .cd-box{
+    flex: 1 1 0; min-width: 0; padding: 13px 6px 10px; border-radius: 14px;
+    border: 1px solid rgba(225,29,72,.48);
+    background: linear-gradient(180deg, rgba(225,29,72,.20) 0%, rgba(46,23,96,.40) 55%, rgba(14,8,32,.85) 100%);
+    box-shadow: inset 0 1px 0 rgba(255,170,190,.16), 0 0 18px rgba(225,29,72,.14);
+  }
+  .eus .cd-num{ font-weight: 700; font-size: 30px; line-height: 1; letter-spacing: -.02em; font-variant-numeric: tabular-nums; color: #FFFFFF; }
+  .eus .cd-unit{ margin-top: 7px; font-size: 10.5px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: #FF6B8A; }
+
+  /* ====================== PONUDA: dvije kartice (isti stil kao kartice na thank-you) ====================== */
+  .eus .offer{ display: grid; grid-template-columns: minmax(0, 400px) minmax(0, 1fr); gap: 22px; align-items: start; max-width: 1040px; margin: 56px auto 0; }
+  .eus .card{
+    position: relative; overflow: hidden;
+    border-radius: 26px; padding: 32px 28px 28px;
+    background: linear-gradient(180deg, #1A0F36 0%, #120A26 42%, #0B0614 100%);
+    border: 1px solid rgba(122,60,240,.26);
+    box-shadow: 0 18px 40px rgba(0,0,0,.55);
+  }
+  .eus .card > *{ position: relative; }
+  .eus .card > .glow{
+    position: absolute; left: 0; top: -30px; width: 75%; height: 170px; pointer-events: none;
+    background: radial-gradient(55% 45% at 0% 42%, rgba(122,60,240,.13) 0%, rgba(122,60,240,.05) 45%, rgba(122,60,240,0) 100%);
+  }
+  .eus .card > .line{
+    position: absolute; left: 0; top: 28px; width: 2px; height: 40px; border-radius: 0 2px 2px 0; pointer-events: none;
+    background: linear-gradient(180deg, rgba(203,184,255,0) 0%, #CBB8FF 50%, rgba(203,184,255,0) 100%);
+    box-shadow: 0 0 6px rgba(122,60,240,.45);
+  }
+  @media (min-width: 901px){ .eus .card-price{ position: sticky; top: 76px; } }
+
+  /* lijeva kartica: cijena + dugmad */
+  .eus .card-price{ text-align: center; }
+  .eus .kicker{ display: block; font-size: 13px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: #B9AED6; }
+  .eus .kicker b{ color: var(--eu-green); font-weight: 700; }
+  .eus .pp-prices{ display: flex; align-items: baseline; justify-content: center; gap: 14px; margin-top: 18px; flex-wrap: wrap; }
+  .eus .pp-old{ color: #A69CC2; font-size: 24px; font-weight: 600; line-height: 1; text-decoration: line-through; text-decoration-color: rgba(255,77,109,.85); text-decoration-thickness: 2px; }
+  .eus .pp-arrow{ color: rgba(107,242,107,.75); font-size: 21px; font-weight: 700; }
+  .eus .pp-new{ color: var(--eu-green); font-size: 68px; font-weight: 800; letter-spacing: -.03em; line-height: 1; text-shadow: 0 0 30px rgba(107,242,107,.25); }
+  .eus .pp-per{ margin-top: 12px; color: #A69CC2; font-size: 14px; font-weight: 500; }
+  .eus .pp-save{
+    display: inline-block; margin-top: 16px; padding: 6px 14px; border-radius: 999px;
+    font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+    color: #E6FFE2; background: rgba(107,242,107,.12); border: 1px solid rgba(107,242,107,.4);
+  }
+  /* cijena: ljubicasta ploca (tamna gore, jaka ljubicasta dole), natpis pa broj */
+  .eus .price-box{
+    display: block; padding: 22px 18px 20px; border-radius: 20px; text-align: center;
+    background: linear-gradient(180deg, #1C1142 0%, #3B1F92 58%, #7A3CF0 100%);
+    border: 1px solid rgba(203,184,255,.38);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.14), 0 18px 44px rgba(122,60,240,.30);
+  }
+  .eus .pb-label{ display: block; color: #CBB8FF; font-size: 21px; font-weight: 600; line-height: 1.2; letter-spacing: -.01em; white-space: nowrap; }
+  /* stara cifra: precrtana crvenom linijom, da se vidi razlika prema cijeni ispod */
+  .eus .pb-old{
+    margin-left: 4px; color: #FFFFFF; font-size: 1.24em; font-weight: 800; letter-spacing: -.02em; font-variant-numeric: tabular-nums;
+    text-decoration: line-through; text-decoration-color: #FF4D6D; text-decoration-thickness: 3px;
+  }
+  .eus .pb-num{
+    display: block; margin-top: 6px; font-size: 72px; font-weight: 800; line-height: 1; letter-spacing: -.035em;
+    color: #FFFFFF; background: linear-gradient(180deg, #FFFFFF 30%, #D8CBFF 100%);
+    -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 6px 18px rgba(20,8,50,.45));
+  }
+  .eus .card-price .cta-btn{ margin-top: 24px; }
+  /* dugme ispod naslova postoji samo na telefonu i tabletu */
+  .eus .hero-cta{ display: none; width: 100%; max-width: 440px; margin-top: 26px; }
+
+  /* DVIJE PONUDE:
+     1) glavno zeleno dugme = placanje odjednom
+     2) link ispod njega = placanje na 2 rate, sa ukupnim iznosom u zagradi (zagrada nije podvucena) */
+  .eus .cta-alt{
+    display: block; width: fit-content; max-width: 100%; margin: 11px auto 0; text-align: center; cursor: pointer;
+    color: #CBB8FF !important; font-size: 15px; font-weight: 500; line-height: 1.3;
+    text-decoration: none !important; transition: color .25s ease;
+  }
+  /* podvucen je samo dio "2 rate po ...", rijec "Ili" nije */
+  .eus .cta-alt .lnk{ text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; text-decoration-color: #CBB8FF; transition: text-decoration-color .25s ease; }
+  .eus .cta-alt:hover{ color: #FFFFFF !important; }
+  .eus .cta-alt:hover .lnk{ text-decoration-color: var(--eu-green); }
+  .eus .cta-alt.is-expired{ display: none; }
+  .eus .status{ margin-top: 14px; }
+  .eus .status{ color: #9A90B8; font-size: 13.5px; line-height: 1.6; text-align: center; }
+
+  /* desna kartica: sta je u ponudi */
+  .eus .value-stack{ list-style: none; display: grid; gap: 10px; }
+  .eus .value-stack li{
+    display: grid; grid-template-columns: 22px minmax(0, 1fr) auto; align-items: center; gap: 12px;
+    padding: 12px 14px; border-radius: 14px;
+    border: 1px solid rgba(255,255,255,.08); background: rgba(255,255,255,.03);
+  }
+  .eus .vs-check{
+    width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    background: var(--eu-green); color: var(--eu-ink); box-shadow: 0 0 12px rgba(107,242,107,.4);
+  }
+  .eus .vs-check svg{ width: 12px; height: 12px; display: block; }
+  .eus .vs-label{ color: #EDE6FF; font-size: 15px; font-weight: 500; }
+  .eus .vs-value{ color: #A69CC2; font-size: 12.5px; font-weight: 600; white-space: nowrap; }
+  .eus .vs-value strong{ color: var(--eu-green); font-weight: 700; }
+  .eus .bonus-list{ display: grid; gap: 10px; margin-top: 14px; }
+  .eus .bonus-row{
+    display: flex; align-items: center; gap: 12px; padding: 13px 14px; border-radius: 14px;
+    border: 1px solid rgba(122,60,240,.34);
+    background: linear-gradient(90deg, rgba(122,60,240,.14), rgba(122,60,240,.04));
+  }
+  .eus .bonus-row svg{ width: 22px; height: 22px; flex-shrink: 0; color: #CBB8FF; }
+  .eus .bonus-row span{ color: #EDE6FF; font-size: 14.5px; line-height: 1.4; }
+  .eus .bonus-row strong{ color: #CBB8FF; font-weight: 700; }
+  /* brzi bonus: zeleni okvir i sjaj, da se odmah razlikuje od obicnog */
+  .eus .bonus-row.fast{
+    border-color: rgba(107,242,107,.45);
+    background: linear-gradient(90deg, rgba(107,242,107,.10), rgba(107,242,107,.02));
+    box-shadow: 0 0 24px rgba(107,242,107,.08);
+  }
+  .eus .bonus-row.fast svg, .eus .bonus-row.fast strong{ color: var(--eu-green); }
+
+  /* ====================== RAZGOVOR SA TIMOM ======================
+     Jedna kartica u sredini. Dugme je ljubicasto i puno (sporedno dugme), ne pulsira. */
+  .eus .call-sec{ padding-top: 96px; }
+  .eus .call-card{
+    position: relative; overflow: hidden; max-width: 1040px; margin: 0 auto; padding: 48px 44px 40px; text-align: center;
+    border-radius: 26px; border: 1px solid rgba(122,60,240,.30);
+    background: radial-gradient(70% 60% at 50% 0%, rgba(122,60,240,.22) 0%, rgba(122,60,240,0) 70%), linear-gradient(180deg, #1A0F36 0%, #120A26 42%, #0B0614 100%);
+    box-shadow: 0 18px 40px rgba(0,0,0,.55);
+  }
+  .eus .call-card > *{ position: relative; }
+  .eus .call-card > .glow{ position: absolute; left: 0; top: -30px; width: 75%; height: 170px; pointer-events: none; background: radial-gradient(55% 45% at 0% 42%, rgba(122,60,240,.13) 0%, rgba(122,60,240,.05) 45%, rgba(122,60,240,0) 100%); }
+  .eus .call-card .h2{ max-width: 760px; margin: 0 auto; font-size: clamp(28px, 3.2vw, 42px); }
+  .eus .call-lead{ margin: 18px auto 0; max-width: 720px; color: #EDE6FF; font-size: 19px; font-weight: 500; line-height: 1.5; }
+  .eus .call-p{ margin: 16px auto 0; max-width: 760px; color: #C2B9DB; font-size: 16.5px; line-height: 1.65; }
+  .eus .cta-purple{
+    display: inline-flex; align-items: center; justify-content: center;
+    min-width: 400px; max-width: 100%; min-height: 56px; margin-top: 30px; padding: 16px 28px;
+    border-radius: 100px; border: 1px solid rgba(203,184,255,.45); cursor: pointer; -webkit-appearance: none; appearance: none;
+    background: linear-gradient(180deg, #8E57F5 0%, #6A31E0 100%);
+    box-shadow: 0 18px 44px rgba(122,60,240,.35), inset 0 1px 0 rgba(255,255,255,.22);
+    color: #FFFFFF !important; text-decoration: none !important;
+    font-size: 17px; font-weight: 700; line-height: 1.05; text-transform: uppercase; text-align: center;
+    transition: transform .25s ease, box-shadow .25s ease, filter .25s ease;
+  }
+  .eus .cta-purple:hover{ transform: translateY(-2px); filter: brightness(1.10); box-shadow: 0 20px 50px rgba(122,60,240,.50), inset 0 1px 0 rgba(255,255,255,.26); }
+  .eus .call-note{ margin-top: 14px; color: #9A90B8; font-size: 14px; line-height: 1.5; }
+
+  /* ====================== REZULTATI IZ ZAJEDNICE ======================
+     Kartice ubacuje skripta (klase euo-* NE mijenjati): prvo video iskustva, pa slike rezultata.
+     Poslije svaka 3 reda dolazi kartica s dugmetom. */
+  .eus .proof-sec{ padding-top: 110px; }
+  .eus .sec-head{ text-align: center; max-width: 760px; margin: 0 auto; }
+  .eus .eyebrow{ display: block; font-weight: 600; font-size: 13px; letter-spacing: .12em; text-transform: uppercase; color: var(--eu-green); }
+  .eus .h2{ font-weight: 600; font-size: clamp(30px, 3.6vw, 48px); line-height: 1.12; letter-spacing: -.02em; color: #FFFFFF; }
+  .eus .euo-feed{ display: grid; grid-template-columns: repeat(3, minmax(0, 330px)); justify-content: center; align-items: start; gap: 18px; margin: 48px 0 22px; }
+  .eus .euo-testimonial-card{
+    width: 100%; max-width: 330px; margin: 0 auto; overflow: hidden;
+    border-radius: 22px; border: 1px solid rgba(122,60,240,.26);
+    background: linear-gradient(180deg, #1A0F36 0%, #120A26 42%, #0B0614 100%);
+    box-shadow: 0 18px 40px rgba(0,0,0,.55);
+  }
+  .eus .euo-testimonial-frame{ position: relative; width: 100%; aspect-ratio: 9 / 16; overflow: hidden; background: radial-gradient(60% 40% at 50% 20%, rgba(122,60,240,.18) 0%, rgba(122,60,240,0) 100%), #0E0820; }
+  .eus .euo-testimonial-frame iframe{ position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  .eus .euo-testimonial-frame img{ display: block; width: 100%; height: 100%; padding: 8px; object-fit: contain; background: transparent; }
+  .eus .euo-tail-row{ grid-column: 1 / -1; width: 100%; display: grid; grid-template-columns: repeat(4, minmax(0, 255px)); justify-content: center; align-items: start; gap: 18px; }
+  .eus .euo-tail-row .euo-testimonial-card{ max-width: 255px; }
+  .eus .euo-proof-cta-card{
+    position: relative; grid-column: 1 / -1; width: 100%; justify-self: center;  /* ista sirina kao red kartica iznad */
+    display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 18px;
+    padding: 22px 30px 22px 20px; border-radius: 26px;
+    border: 1px solid rgba(122,60,240,.34);
+    background: radial-gradient(60% 120% at 0% 50%, rgba(122,60,240,.20) 0%, rgba(122,60,240,0) 70%), linear-gradient(180deg, #1A0F36 0%, #120A26 100%);
+    box-shadow: 0 18px 40px rgba(0,0,0,.55);
+  }
+  .eus .euo-proof-cta-card + .euo-proof-cta-card{ display: none !important; }
+  .eus .euo-proof-cta-card h3{ color: #FFFFFF; font-size: clamp(22px, 2.6vw, 30px); font-weight: 700; line-height: 1.15; letter-spacing: -.02em; }
+  .eus .euo-proof-cta-card .cta-btn{ width: 300px; }
+  /* raketa: izrezana slika bez pozadine (providan PNG), pa lezi na bilo kojoj podlozi */
+  .eus .euo-proof-cta-card .cta-rk{ display: block; width: 84px; height: 84px; object-fit: contain; }
+  .eus .euo-feed-sentinel{ width: 100%; height: 1px; }
+
+
+  /* ====================== RESPONSIVE ====================== */
+  @media (max-width: 900px){
+    .eus .offer{ grid-template-columns: minmax(0, 1fr); max-width: 560px; margin-top: 44px; }
+    /* telefon i tablet: prvo lista (sta dobijas), pa kartica s cijenom i tajmerom */
+    .eus .card-list{ order: -1; }
+    .eus .hero-cta{ display: inline-flex; }
+    .eus .proof-sec{ padding-top: 84px; }
+    .eus .call-sec{ padding-top: 72px; }
+    .eus .call-card{ max-width: 560px; }
+    .eus .euo-feed, .eus .euo-tail-row{ grid-template-columns: repeat(2, minmax(0, 320px)); }
+    .eus .euo-tail-row .euo-testimonial-card{ max-width: 320px; }
+    .eus .euo-proof-cta-card{ grid-template-columns: minmax(0, 1fr); justify-items: center; text-align: center; gap: 12px; padding: 20px 22px 24px; }
+    .eus .euo-proof-cta-card .cta-btn{ width: 100%; }
+  }
+  @media (max-width: 640px){
+    .eus{ padding-bottom: 80px; }
+    .eus .beam{ width: 130px; height: 460px; }
+    .eus .wrap{ padding: 0 16px; }
+    .eus .hero{ padding-top: 40px; }
+    .eus .badge{ font-size: 12px; padding: 8px 15px; }
+    .eus .card{ padding: 26px 18px 22px; border-radius: 22px; }
+    .eus .pb-label{ font-size: clamp(16px, 5vw, 20px); }
+    .eus .pb-num{ font-size: 64px; }
+    .eus .cta-btn{ min-height: 52px; padding: 16px 20px; font-size: 16px; }
+    .eus .cta-alt{ font-size: 15px; }
+
+    .eus .cta-btn{ animation-name: eusCtaPulseM; }
+    @keyframes eusCtaPulseM{
+      0%, 100%{ scale: 1; box-shadow: 0 18px 48px rgba(107,242,107,.15), 0 0 0 0 rgba(107,242,107,0); }
+      50%{ scale: 1.03; box-shadow: 0 18px 48px rgba(107,242,107,.32), 0 0 22px 2px rgba(107,242,107,.32); }
+    }
+    .eus .value-stack li{ grid-template-columns: 22px minmax(0, 1fr); gap: 3px 12px; }
+    .eus .value-stack .vs-check{ grid-row: 1 / span 2; align-self: center; }
+    .eus .proof-sec{ padding-top: 68px; }
+    .eus .call-sec{ padding-top: 56px; }
+    .eus .call-card{ padding: 32px 18px 28px; border-radius: 22px; }
+    .eus .call-lead{ font-size: 17px; }
+    .eus .call-p{ font-size: 15.5px; }
+    .eus .cta-purple{ width: 100%; min-width: 0; min-height: 52px; margin-top: 26px; padding: 16px 18px; font-size: 15px; }
+    .eus .euo-feed{ margin-top: 34px; }
+    .eus .euo-feed, .eus .euo-tail-row{ grid-template-columns: minmax(0, 1fr); gap: 16px; }
+    .eus .euo-testimonial-card, .eus .euo-tail-row .euo-testimonial-card{ max-width: 330px; }
+    .eus .euo-proof-cta-card{ max-width: 330px; padding: 22px 18px; border-radius: 22px; }
+    .eus .vs-value{ grid-column: 2; justify-self: start; }
+  }
+
+  /* ====================== POZADINSKI SJAJEVI I DEKOR (isto kao ostale NS stranice) ====================== */
+  .eus::before{ content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; background: radial-gradient(620px 560px at 0% 38%, rgba(122,60,240,.20) 0%, rgba(122,60,240,0) 70%), radial-gradient(620px 560px at 100% 62%, rgba(122,60,240,.16) 0%, rgba(122,60,240,0) 70%), radial-gradient(680px 560px at 0% 88%, rgba(91,43,208,.14) 0%, rgba(91,43,208,0) 70%); -webkit-mask-image: linear-gradient(180deg, #000 0, #000 calc(100% - 320px), transparent 100%); mask-image: linear-gradient(180deg, #000 0, #000 calc(100% - 320px), transparent 100%); }
+  .eus::after{ content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; background-image: linear-gradient(rgba(122,60,240,.12) 1px, transparent 1px), linear-gradient(90deg, rgba(122,60,240,.12) 1px, transparent 1px); background-size: 72px 72px; background-position: center top; -webkit-mask-image: radial-gradient(620px 380px at 50% 86%, #000 0%, transparent 100%); mask-image: radial-gradient(620px 380px at 50% 86%, #000 0%, transparent 100%); }
+</style>
+</head>
+<body style="margin:0">
+<div class="eus" data-euo-page>
+  <div class="beam" aria-hidden="true" style="left: 12%; transform: rotate(24deg)"></div>
+  <div class="beam" aria-hidden="true" style="left: 32%; transform: rotate(9deg); opacity: .3"></div>
+  <div class="beam" aria-hidden="true" style="right: 32%; transform: rotate(-9deg); opacity: .3"></div>
+  <div class="beam" aria-hidden="true" style="right: 12%; transform: rotate(-24deg)"></div>
+
+  <div class="wrap">
+    <div class="hero">
+      <span class="badge"><span class="dot"></span>Ponuda s izazova Nešto svoje</span>
+      <h1 class="h1">Kompletan sustav koji koristi 6.000+ ljudi da zarađuju <span class="y">€228+/dnevno</span> od AI video editinga</h1>
+      <!-- samo na telefonu i tabletu: skroluje do kartice s cijenom i tajmerom (ne vodi na placanje) -->
+      <a class="cta-btn hero-cta" data-euo-cta data-euo-scroll href="#cijena"><span data-euo-cta-text>Želim pristup odmah</span></a>
+    </div>
+
+    <div class="offer">
+      <div class="card card-price" id="cijena">
+        <span class="glow" aria-hidden="true"></span><span class="line" aria-hidden="true"></span>
+        <div class="price-box">
+          <span class="pb-label">Ukupna vrijednost: <s class="pb-old">€8.122</s></span>
+          <span class="pb-num">€997</span>
+        </div>
+
+        <a class="cta-btn" data-euo-cta href="https://buy.stripe.com/9B69ATaUlage2mjfZeasg1l"><span data-euo-cta-text>Želim pristup odmah</span></a>
+        <a class="cta-alt" data-euo-cta href="https://buy.stripe.com/9B6fZh1jLbki8KHaEUasg1m">Ili <span class="lnk">2 rate po €549</span> (ukupno&nbsp;€1.098)</a>
+        <p class="cd-label" data-euo-timer-title>Brzi bonusi nestaju za</p>
+        <div class="countdown" aria-label="Odbrojavanje ponude">
+          <div class="cd-box"><div class="cd-num" data-euo-days>00</div><div class="cd-unit">Dana</div></div>
+          <div class="cd-box"><div class="cd-num" data-euo-hours>00</div><div class="cd-unit">Sati</div></div>
+          <div class="cd-box"><div class="cd-num" data-euo-minutes>00</div><div class="cd-unit">Min</div></div>
+          <div class="cd-box"><div class="cd-num" data-euo-seconds>00</div><div class="cd-unit">Sek</div></div>
+        </div>
+        <p class="status" data-euo-status>Nakon toga ostaje glavna ponuda do 15.11. u&nbsp;23:59.</p>
+      </div>
+
+      <div class="card card-list">
+        <span class="glow" aria-hidden="true"></span><span class="line" aria-hidden="true"></span>
+        <ul class="value-stack">
+              <li><span class="vs-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg></span><span class="vs-label">AI VIDEO EDITOR Edukacija</span><span class="vs-value"><strong>€997</strong> vrijednost</span></li>
+              <li><span class="vs-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg></span><span class="vs-label">AI EDITOR BOT</span><span class="vs-value"><strong>€1.247</strong> vrijednost</span></li>
+              <li><span class="vs-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg></span><span class="vs-label">Potpuna Video Editing Edukacija “EDIT U NOVAC”</span><span class="vs-value"><strong>€997</strong> vrijednost</span></li>
+              <li><span class="vs-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg></span><span class="vs-label">Klijent Mapa</span><span class="vs-value"><strong>€1.375</strong> vrijednost</span></li>
+              <li><span class="vs-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg></span><span class="vs-label">Zajednica Ljudi poput TEBE</span><span class="vs-value"><strong>€797</strong> vrijednost</span></li>
+              <li><span class="vs-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg></span><span class="vs-label">2 Grupna Tjedna Poziva + Snimke 100+ Poziva</span><span class="vs-value"><strong>€1.590</strong> vrijednost</span></li>
+              <li><span class="vs-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg></span><span class="vs-label">Klijentski Sef</span><span class="vs-value"><strong>€997</strong> vrijednost</span></li>
+        </ul>
+        <div class="bonus-list">
+          <div class="bonus-row">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20 7h-2.18A3 3 0 0 0 12 5.95 3 3 0 0 0 6.18 7H4a1 1 0 0 0-1 1v3h18V8a1 1 0 0 0-1-1ZM9 7a1 1 0 1 1 1-1 1 1 0 0 1-1 1Zm6 0a1 1 0 1 1 1-1 1 1 0 0 1-1 1ZM5 13v7a1 1 0 0 0 1 1h5v-8H5Zm8 0v8h5a1 1 0 0 0 1-1v-7h-6Z"/></svg>
+            <span><strong>BONUS:</strong> AI Zaposlenik</span>
+          </div>
+          <div class="bonus-row fast" data-euo-fast-bonus>
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13.2 2.3 4.6 13.1a.8.8 0 0 0 .63 1.3H11l-1.1 7.1a.5.5 0 0 0 .89.39l8.6-10.8a.8.8 0 0 0-.63-1.3H13l1.1-7.1a.5.5 0 0 0-.9-.39Z"/></svg>
+            <span><strong>BRZI BONUS:</strong> Zajedničko Polijetanje</span>
+          </div>
+          <div class="bonus-row fast" data-euo-fast-bonus>
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13.2 2.3 4.6 13.1a.8.8 0 0 0 .63 1.3H11l-1.1 7.1a.5.5 0 0 0 .89.39l8.6-10.8a.8.8 0 0 0-.63-1.3H13l1.1-7.1a.5.5 0 0 0-.9-.39Z"/></svg>
+            <span><strong>BRZI BONUS:</strong> 1:1 sa mnom - Prvih 8</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====================== RAZGOVOR SA TIMOM ======================
+         Dugme otvara iClosed kalendar u popupu (skripta widget.js je na dnu koda).
+         Link kalendara se upisuje na JEDNOM mjestu: u data-iclosed-link na dugmetu ispod. -->
+    <section class="call-sec" id="poziv">
+      <div class="call-card">
+        <span class="glow" aria-hidden="true"></span>
+        <h2 class="h2">Zanima te program, ali još <span class="y">imaš&nbsp;pitanja?</span></h2>
+        <p class="call-lead">Rezerviraj besplatan razgovor sa specijalistom iz našeg tima i provjeri odgovara li program tvojoj&nbsp;situaciji.</p>
+        <p class="call-p">Na razgovoru možeš pitati sve što ti je ostalo nejasno nakon&nbsp;prezentacije.</p>
+        <p class="call-p">Proći ćemo tvoje ciljeve, odgovoriti na pitanja i zajedno procijeniti možemo li ti pomoći. Ako je program za tebe, pokazat ćemo ti više detalja i pomoći ti pri ulasku koliko možemo. Ako nije, svejedno ćemo ti dati savjet za tvoj sljedeći korak da ne odeš praznih&nbsp;ruku&nbsp;:)</p>
+        <button type="button" class="cta-purple" data-iclosed-link="https://app.iclosed.io/e/tibor/nes-to-svoje-strate-ki-poziv" data-embed-type="popup">Odaberi termin koji ti odgovara</button>
+        <p class="call-note">Razgovor je besplatan.</p>
+      </div>
+    </section>
+
+    <section class="proof-sec">
+      <div class="sec-head">
+        <h2 class="h2">Prvo pogledaj <span class="y">njihove rezultate</span></h2>
+      </div>
+      <div class="euo-feed" data-euo-feed></div>
+      <div class="euo-feed-sentinel" data-euo-feed-sentinel></div>
+    </section>
+  </div>
+</div>
+
+<script>
+  // ---------- Bez jedne rijeci u zadnjem redu (isto kao optin) ----------
+  // Razmak ispred zadnje rijeci postaje neprekidivi razmak, pa zadnja rijec nikad ne ostaje sama u redu.
+  // Radi i kad je zadnja rijec u posebnom <span> ili iza njega.
+  // Tekst koji tajmer mijenja svake sekunde se ponovo obradi cim se promijeni.
+  (function () {
+    var NB = '\u00A0';
+    function fix(el) {
+      if (!el) return;
+      var full = (el.textContent || '').replace(/\s+/g, ' ').trim();
+      if (full.split(' ').length < 3) return;
+      var walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null, false);
+      var nodes = [], n;
+      while ((n = walker.nextNode())) nodes.push(n);
+      var seenWord = false;
+      for (var i = nodes.length - 1; i >= 0; i--) {
+        var v = nodes[i].nodeValue;
+        var end = v.length;
+        if (!seenWord) {
+          end = v.replace(/\s+$/, '').length;
+          if (end === 0) continue;
+          seenWord = true;
+        }
+        var part = v.slice(0, end);
+        var idx = Math.max(part.lastIndexOf(' '), part.lastIndexOf(NB));
+        if (idx >= 0) {
+          // razmak ispred zadnje rijeci je vec neprekidiv: nista ne radi (zato je bezbjedno pozvati vise puta)
+          if (part.charAt(idx) === NB) return;
+          if (idx === 0 && i === 0) return;
+          nodes[i].nodeValue = v.slice(0, idx) + NB + v.slice(idx + 1);
+          return;
+        }
+      }
+    }
+    function run() {
+      var els = document.querySelectorAll('.eus h1, .eus h2, .eus h3, .eus p, .eus .vs-label, .eus .bonus-row > span');
+      for (var i = 0; i < els.length; i++) { try { fix(els[i]); } catch (e) {} }
+      if ('MutationObserver' in window) {
+        var dyn = document.querySelectorAll('.eus [data-euo-status], .eus [data-euo-timer-title], .eus [data-euo-cta-text]');
+        for (var j = 0; j < dyn.length; j++) {
+          (function (el) {
+            fix(el);
+            new MutationObserver(function () { fix(el); }).observe(el, { childList: true, characterData: true, subtree: true });
+          })(dyn[j]);
+        }
+      }
+    }
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run); else run();
+  })();
+</script>
+
+<script>
+(function () {
+  function cleanTopBar() {
+    var root = document.querySelector("[data-euo-page]");
+    if (!root) return;
+
+    var current = root;
+
+    while (current && current.parentElement) {
+      var sibling = current.previousElementSibling;
+
+      while (sibling) {
+        sibling.style.display = "none";
+        sibling.setAttribute("aria-hidden", "true");
+        sibling = sibling.previousElementSibling;
+      }
+
+      if (current.parentElement === document.body) break;
+      current = current.parentElement;
+    }
+
+    var badText = ["```html", "```", "Paste this", "Use this", "GHL", "HTML block"];
+
+    var walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
+      acceptNode: function (node) {
+        var text = String(node.textContent || "").trim();
+
+        if (!text) return NodeFilter.FILTER_REJECT;
+        if (text === "html") return NodeFilter.FILTER_ACCEPT;
+
+        if (node.parentElement && node.parentElement.closest("[data-euo-page], script, style")) {
+          return NodeFilter.FILTER_REJECT;
+        }
+
+        for (var i = 0; i < badText.length; i++) {
+          if (text.indexOf(badText[i]) !== -1) return NodeFilter.FILTER_ACCEPT;
+        }
+
+        return NodeFilter.FILTER_REJECT;
+      }
+    });
+
+    var nodes = [];
+    var node;
+
+    while ((node = walker.nextNode())) {
+      nodes.push(node);
+    }
+
+    nodes.forEach(function (textNode) {
+      if (textNode.parentNode) textNode.parentNode.removeChild(textNode);
+    });
+  }
+
+  cleanTopBar();
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", cleanTopBar);
+  }
+
+  setTimeout(cleanTopBar, 150);
+  setTimeout(cleanTopBar, 700);
+  setTimeout(cleanTopBar, 1600);
+})();
+</script>
+
+<script>
+(function () {
+  var root = document.querySelector("[data-euo-page]");
+  if (!root) return;
+
+  // ======================= PODESAVANJA =======================
+  // Vrijeme je Europe/Belgrade. Ako se rokovi promijene, mijenjaju se SAMO ova dva reda.
+  // Datumi i dan u tekstovima na stranici se sami prilagode.
+  // FAZA 1: do kraja brzih bonusa (dan izazova, srijeda 11.11.2026. u 21:30) vide se brzi bonusi i tajmer broji do tada.
+  var FAST_BONUS_END = { y: 2026, m: 11, d: 11, h: 21, min: 30, s: 0 };
+  // FAZA 2: poslije toga brzi bonusi nestaju, tajmer broji do kraja ponude (nedjelja 15.11.2026. u 23:59:59).
+  var OFFER_END = { y: 2026, m: 11, d: 15, h: 23, min: 59, s: 59 };
+  // ===========================================================
+
+  // Tacan trenutak za zadato vrijeme u Beogradu (sam rjesava ljetno i zimsko racunanje vremena).
+  function belgradeEpoch(y, m, d, hh, mm, ss) {
+    var guess = Date.UTC(y, m - 1, d, hh, mm, ss || 0);
+    var f = new Intl.DateTimeFormat("en-US", { timeZone: "Europe/Belgrade", hour12: false,
+      year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", second: "2-digit" });
+    var p = {}; f.formatToParts(new Date(guess)).forEach(function (x) { p[x.type] = x.value; });
+    var asUTC = Date.UTC(+p.year, p.month - 1, +p.day, +p.hour % 24, +p.minute, +p.second);
+    return guess - (asUTC - guess);
+  }
+  function bgParts(ts) {
+    var f = new Intl.DateTimeFormat("en-GB", { timeZone: "Europe/Belgrade", hour12: false,
+      weekday: "short", day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" });
+    var p = {}; f.formatToParts(new Date(ts)).forEach(function (x) { p[x.type] = x.value; });
+    return p;
+  }
+  // "15.11. u 23:59"
+  function fmtBg(ts) { var p = bgParts(ts); return p.day + "." + p.month + ". u " + p.hour + ":" + p.minute; }
+  // "nedjelje" (do koga dana traje ponuda)
+  var DAY_GEN = { Sun: "nedjelje", Mon: "ponedjeljka", Tue: "utorka", Wed: "srijede", Thu: "četvrtka", Fri: "petka", Sat: "subote" };
+
+  var offerEnd = belgradeEpoch(OFFER_END.y, OFFER_END.m, OFFER_END.d, OFFER_END.h, OFFER_END.min, OFFER_END.s);
+  var fastEnd = belgradeEpoch(FAST_BONUS_END.y, FAST_BONUS_END.m, FAST_BONUS_END.d, FAST_BONUS_END.h, FAST_BONUS_END.min, FAST_BONUS_END.s);
+  var fastTxt = fmtBg(fastEnd);
+  var fastTime = (function () { var p = bgParts(fastEnd); return p.hour + ":" + p.minute; })();   // "21:30"
+  var endTxt = fmtBg(offerEnd);
+  var endDay = DAY_GEN[bgParts(offerEnd).weekday] || "";
+
+  var daysEl = root.querySelector("[data-euo-days]");
+  var hoursEl = root.querySelector("[data-euo-hours]");
+  var minutesEl = root.querySelector("[data-euo-minutes]");
+  var secondsEl = root.querySelector("[data-euo-seconds]");
+  var statusEl = root.querySelector("[data-euo-status]");
+  var timerTitleEl = root.querySelector("[data-euo-timer-title]");
+
+  function pad(num) { return String(num).padStart(2, "0"); }
+  // tekst se upisuje samo kad se stvarno promijeni (da se stranica ne dira svake sekunde bez potrebe)
+  function setText(el, txt) { if (el && el.getAttribute("data-euo-txt") !== txt) { el.setAttribute("data-euo-txt", txt); el.textContent = txt; } }
+
+  function setCtas(expired) {
+    root.querySelectorAll("[data-euo-cta]").forEach(function (cta) {
+      if (expired) {
+        cta.classList.add("is-expired");
+        cta.setAttribute("aria-disabled", "true");
+        cta.setAttribute("tabindex", "-1");
+      } else {
+        cta.classList.remove("is-expired");
+        cta.removeAttribute("aria-disabled");
+        cta.removeAttribute("tabindex");
+      }
+    });
+    root.querySelectorAll("[data-euo-cta-text]").forEach(function (t) {
+      setText(t, expired ? "Ponuda je istekla" : "Želim pristup odmah");
+    });
+  }
+
+  function render(diff) {
+    diff = Math.max(0, diff);
+    var total = Math.floor(diff / 1000);
+    if (daysEl) daysEl.textContent = pad(Math.floor(total / 86400));
+    if (hoursEl) hoursEl.textContent = pad(Math.floor((total % 86400) / 3600));
+    if (minutesEl) minutesEl.textContent = pad(Math.floor((total % 3600) / 60));
+    if (secondsEl) secondsEl.textContent = pad(total % 60);
+  }
+
+  function setFastBonusesVisible(visible) {
+    root.querySelectorAll("[data-euo-fast-bonus]").forEach(function (el) { el.style.display = visible ? "" : "none"; });
+  }
+
+  function tick() {
+    var now = Date.now();
+
+    // FAZA 1: brzi bonusi vidljivi, tajmer broji do kraja brzih bonusa.
+    if (now <= fastEnd) {
+      render(fastEnd - now);
+      setText(timerTitleEl, "Brzi bonusi nestaju za");
+      setText(statusEl, "Nakon toga ostaje glavna ponuda do " + endTxt + ".");
+      setFastBonusesVisible(true);
+      setCtas(false);
+      return;
+    }
+
+    // FAZA 2: brzi bonusi sklonjeni, tajmer broji do kraja ponude.
+    if (now <= offerEnd) {
+      render(offerEnd - now);
+      setText(timerTitleEl, "Ponuda nestaje za");
+      setFastBonusesVisible(false);
+      setText(statusEl, "Ponuda nestaje " + endTxt + ". Nakon toga cijena više nije dostupna.");
+      setCtas(false);
+      return;
+    }
+
+    // Poslije roka: tajmer na nuli, sva dugmad siva i neaktivna.
+    render(0);
+    setFastBonusesVisible(false);
+    setText(timerTitleEl, "Ponuda je istekla");
+    setText(statusEl, "Ova ponuda više nije dostupna.");
+    setCtas(true);
+  }
+
+  tick();
+  setInterval(tick, 1000);
+
+  // Dugme ispod naslova: glatko skroluje do kartice s cijenom i tajmerom.
+  document.addEventListener("click", function (e) {
+    var link = e.target.closest && e.target.closest("[data-euo-scroll]");
+    if (!link) return;
+    e.preventDefault();
+    var target = document.getElementById("cijena");
+    if (!target) return;
+    var y = target.getBoundingClientRect().top + (window.pageYOffset || window.scrollY || 0) - 16;
+    window.scrollTo({ top: y, behavior: "smooth" });
+  }, false);
+})();
+</script>
+
+<script>
+(function () {
+  var root = document.querySelector("[data-euo-page]");
+  if (!root) return;
+
+  var feed = root.querySelector("[data-euo-feed]");
+  var sentinel = root.querySelector("[data-euo-feed-sentinel]");
+
+  if (!feed || !sentinel) return;
+
+  var stripe = "https://buy.stripe.com/9B69ATaUlage2mjfZeasg1l";
+
+  var videos = [
+    "https://iframe.mediadelivery.net/embed/273742/6cf2b75f-a687-46ed-978a-edecfcd65ec5?autoplay=false&loop=false&muted=false&preload=false&responsive=true",
+    "https://iframe.mediadelivery.net/embed/273742/7620888a-cae7-4be6-bd5f-546bb88900c4?autoplay=false&loop=false&muted=false&preload=false&responsive=true",
+    "https://iframe.mediadelivery.net/embed/273742/eae30793-e5af-4480-ab7e-7572ff9cc49f?autoplay=false&loop=false&muted=false&preload=false&responsive=true",
+    "https://iframe.mediadelivery.net/embed/273742/be0af93b-8b09-47bc-b4d0-6d582a842815?autoplay=false&loop=false&muted=false&preload=false&responsive=true",
+    "https://iframe.mediadelivery.net/embed/273742/6f0eb165-6d1c-4002-a8be-ed3596c03aa6?autoplay=false&loop=false&muted=false&preload=false&responsive=true",
+    "https://iframe.mediadelivery.net/embed/273742/a81dec71-da30-4d45-8101-e8dd70ef3e49?autoplay=false&loop=false&muted=false&preload=false&responsive=true",
+    "https://iframe.mediadelivery.net/embed/273742/89396734-7550-46ea-a0f7-70882fa3ad2f?autoplay=false&loop=false&muted=false&preload=false&responsive=true",
+    "https://iframe.mediadelivery.net/embed/273742/3054735b-0344-44a5-be5d-d0db3d01c710?autoplay=false&loop=false&muted=false&preload=false&responsive=true",
+    "https://iframe.mediadelivery.net/embed/273742/0bda4d84-7167-4ada-8db9-97c89538eec0?autoplay=false&loop=false&muted=false&preload=false&responsive=true",
+    "https://iframe.mediadelivery.net/embed/273742/1c1f2a4d-bfdd-4efd-b46e-3fd792c49b03?autoplay=false&loop=false&muted=false&preload=false&responsive=true",
+    "https://iframe.mediadelivery.net/embed/273742/011c1ac3-17a1-4f38-89da-f3a69eb52ef9?autoplay=false&loop=false&muted=false&preload=false&responsive=true",
+    "https://iframe.mediadelivery.net/embed/273742/694ec6e8-19fb-4e03-9f18-9f5fb63e76eb?autoplay=false&loop=false&muted=false&preload=false&responsive=true",
+    "https://iframe.mediadelivery.net/embed/273742/0ef181e7-cb0a-4035-ab70-71131ccd59e8?autoplay=false&loop=false&muted=false&preload=false&responsive=true",
+    "https://iframe.mediadelivery.net/embed/273742/199c2036-7236-4821-a826-704588cd0099?autoplay=false&loop=false&muted=false&preload=false&responsive=true",
+    "https://iframe.mediadelivery.net/embed/273742/8dc3f927-11f2-4239-b3fc-12c3870f946d?autoplay=false&loop=false&muted=false&preload=false&responsive=true",
+    "https://iframe.mediadelivery.net/embed/273742/0d14614c-6bf1-4b59-bd55-6d9dd23d428a?autoplay=false&loop=false&muted=false&preload=false&responsive=true",
+    "https://iframe.mediadelivery.net/embed/273742/1f484f89-e9d5-4925-8899-9b55a18bc9d5?autoplay=false&loop=false&muted=false&preload=false&responsive=true",
+    "https://iframe.mediadelivery.net/embed/273742/6de13413-3e9b-4e7f-8515-ba9552f5d8aa?autoplay=false&loop=false&muted=false&preload=false&responsive=true",
+    "https://iframe.mediadelivery.net/embed/273742/057c8588-5c6c-4e9c-a1e6-5dbc466698b1?autoplay=false&loop=false&muted=false&preload=false&responsive=true",
+    "https://iframe.mediadelivery.net/embed/273742/131984da-27c9-45e7-b1ac-9ad82dd763ee?autoplay=false&loop=false&muted=false&preload=false&responsive=true"
+  ];
+
+  var images = [
+    "https://assets.cdn.filesafe.space/Zyilin5HFiDuC461lVdk/media/504e6867-75e4-413e-822a-c726311482f6.png",
+    "https://assets.cdn.filesafe.space/Zyilin5HFiDuC461lVdk/media/8303678e-2643-45b2-976d-0305f1d143c9.png",
+    "https://assets.cdn.filesafe.space/Zyilin5HFiDuC461lVdk/media/5571b467-33c2-47c3-b5a7-11f2cea550a1.png",
+    "https://assets.cdn.filesafe.space/Zyilin5HFiDuC461lVdk/media/efedd673-f28a-4aa8-b444-ef2c2cd285dc.png",
+    "https://assets.cdn.filesafe.space/Zyilin5HFiDuC461lVdk/media/8469156e-83f9-497f-a5d2-af4b6ed61fd4.jpeg",
+    "https://assets.cdn.filesafe.space/Zyilin5HFiDuC461lVdk/media/ad40139d-1ffe-4efb-bf39-c911453ea6ee.png",
+    "https://assets.cdn.filesafe.space/Zyilin5HFiDuC461lVdk/media/90091e0c-6b02-4fbf-a221-229cffbea662.png",
+    "https://assets.cdn.filesafe.space/Zyilin5HFiDuC461lVdk/media/9778e224-245c-42c5-9f58-d57b6ed4ed4e.png",
+    "https://assets.cdn.filesafe.space/Zyilin5HFiDuC461lVdk/media/e518e2d8-c99d-41f8-ad0b-d169f0376cab.jpeg",
+    "https://assets.cdn.filesafe.space/Zyilin5HFiDuC461lVdk/media/a26c13be-bb04-4bad-af7f-1b5c12366e7b.png",
+    "https://assets.cdn.filesafe.space/Zyilin5HFiDuC461lVdk/media/6df52b2f-3fd5-45ea-bc61-239a642d9269.png",
+    "https://assets.cdn.filesafe.space/Zyilin5HFiDuC461lVdk/media/a5e34897-68c4-4493-bbe2-d12c3927c950.jpeg",
+    "https://assets.cdn.filesafe.space/Zyilin5HFiDuC461lVdk/media/5aa77628-19fa-42d0-a38a-e66de50fc292.jpeg",
+    "https://assets.cdn.filesafe.space/Zyilin5HFiDuC461lVdk/media/3e61e23b-0596-45fd-bf94-b5e9ce3621d6.png",
+    "https://assets.cdn.filesafe.space/Zyilin5HFiDuC461lVdk/media/76091f4e-fccc-4286-8869-62619a3008b4.png",
+    "https://assets.cdn.filesafe.space/Zyilin5HFiDuC461lVdk/media/09c025bb-9086-4a43-9cf2-f38069e31bda.png",
+    "https://assets.cdn.filesafe.space/Zyilin5HFiDuC461lVdk/media/38404fa5-f665-4059-a73e-f7a2901abd35.png",
+    "https://assets.cdn.filesafe.space/Zyilin5HFiDuC461lVdk/media/c76a51ab-d7c8-4846-820c-6817ca4752d4.jpeg",
+    "https://assets.cdn.filesafe.space/Zyilin5HFiDuC461lVdk/media/2b2a819b-1bdb-47d5-b34e-be237ae6c805.jpeg",
+    "https://assets.cdn.filesafe.space/Zyilin5HFiDuC461lVdk/media/04cb5668-e76d-4310-9a59-c91ca26ba488.png",
+    "https://assets.cdn.filesafe.space/Zyilin5HFiDuC461lVdk/media/37e39c14-e616-4e6e-a15d-4665d5285cf3.jpeg",
+    "https://assets.cdn.filesafe.space/Zyilin5HFiDuC461lVdk/media/9deaa1e5-36ad-4a2e-bdd5-8d30b54eee23.jpeg",
+    "https://assets.cdn.filesafe.space/Zyilin5HFiDuC461lVdk/media/2882cb24-fcf8-4015-aef7-3963fb208f82.jpeg",
+    "https://assets.cdn.filesafe.space/Zyilin5HFiDuC461lVdk/media/a245694a-f847-47df-ae3f-e3f78e75ec30.png",
+    "https://assets.cdn.filesafe.space/Zyilin5HFiDuC461lVdk/media/f472a1b0-8693-4f25-8f38-0b9d451636fc.jpeg",
+    "https://assets.cdn.filesafe.space/Zyilin5HFiDuC461lVdk/media/364af0c1-e4c3-44d7-83ae-9909333442d5.png",
+    "https://assets.cdn.filesafe.space/Zyilin5HFiDuC461lVdk/media/0acbe5d6-5c24-4d38-9a0a-bc7f3d38aa20.png",
+    "https://assets.cdn.filesafe.space/Zyilin5HFiDuC461lVdk/media/2de839f1-2af4-49b1-a98b-ac19d66678ce.jpeg",
+    "https://assets.cdn.filesafe.space/Zyilin5HFiDuC461lVdk/media/91355d9f-f20b-47c6-a64b-887feb386f6a.png",
+    "https://assets.cdn.filesafe.space/Zyilin5HFiDuC461lVdk/media/b92a8e1d-9860-4bef-a9aa-b777f72a1a11.png",
+    "https://assets.cdn.filesafe.space/Zyilin5HFiDuC461lVdk/media/8dfc4ddf-4653-4268-860b-845c0a0cdf3b.png",
+    "https://assets.cdn.filesafe.space/Zyilin5HFiDuC461lVdk/media/d1c9b8ef-90f5-4376-97df-a6b2c9d015ac.jpeg",
+    "https://assets.cdn.filesafe.space/Zyilin5HFiDuC461lVdk/media/0fc8bc6c-63e3-439a-8a55-1e552cd041fc.png",
+    "https://assets.cdn.filesafe.space/Zyilin5HFiDuC461lVdk/media/8888944b-1391-43b8-9650-1acf60f83042.jpeg",
+    "https://assets.cdn.filesafe.space/Zyilin5HFiDuC461lVdk/media/b93042a5-ac68-4eeb-a0f6-4e9dcd5bb1e7.jpeg",
+    "https://assets.cdn.filesafe.space/Zyilin5HFiDuC461lVdk/media/833a6355-e59f-44fc-a13c-35b9121ea7e5.jpeg",
+    "https://assets.cdn.filesafe.space/Zyilin5HFiDuC461lVdk/media/53e63533-e769-4ba8-a7c2-03d65435d7d3.jpeg",
+    "https://assets.cdn.filesafe.space/Zyilin5HFiDuC461lVdk/media/62122360-230e-4aac-9516-1d48a0df464e.jpeg",
+    "https://assets.cdn.filesafe.space/Zyilin5HFiDuC461lVdk/media/698cf8c7715cda3e8dadabb6.png",
+    "https://assets.cdn.filesafe.space/Zyilin5HFiDuC461lVdk/media/2d0bd3e0-da59-49d1-a8c7-b893b712294c.jpeg",
+    "https://assets.cdn.filesafe.space/Zyilin5HFiDuC461lVdk/media/493f3327-3497-4c2f-9525-adbe0b41c353.jpeg",
+    "https://assets.cdn.filesafe.space/Zyilin5HFiDuC461lVdk/media/a03a26f1-fde9-42f6-afb1-23307b6ece73.jpeg",
+    "https://assets.cdn.filesafe.space/Zyilin5HFiDuC461lVdk/media/aaec0d68-80f5-42aa-bb16-f06795bc03a9.jpeg",
+    "https://assets.cdn.filesafe.space/Zyilin5HFiDuC461lVdk/media/043c224f-a79e-4f6e-8972-8de7e78d0a1a.jpeg",
+    "https://assets.cdn.filesafe.space/Zyilin5HFiDuC461lVdk/media/976aacfb-0ca3-446d-a68f-5d6f01d0b304.jpeg",
+    "https://assets.cdn.filesafe.space/Zyilin5HFiDuC461lVdk/media/95b1cb03-475c-412d-96d6-417b91b8425e.jpeg",
+    "https://assets.cdn.filesafe.space/Zyilin5HFiDuC461lVdk/media/371f4601-87fd-4339-9d9a-d2c0204e3ee2.jpeg",
+    "https://assets.cdn.filesafe.space/Zyilin5HFiDuC461lVdk/media/7edac574-3b63-4b79-941c-bd1e2c1e7b82.jpeg",
+    "https://assets.cdn.filesafe.space/Zyilin5HFiDuC461lVdk/media/448d680e-db3e-4ae5-a0d7-3ee530901216.jpeg",
+    "https://assets.cdn.filesafe.space/Zyilin5HFiDuC461lVdk/media/fadc3424-a280-4160-b763-3da8249b7e13.jpeg",
+    "https://assets.cdn.filesafe.space/Zyilin5HFiDuC461lVdk/media/9beb5514-b935-4795-9ec1-4545ba52a1a2.jpeg",
+    "https://assets.cdn.filesafe.space/Zyilin5HFiDuC461lVdk/media/3186a6cf-babc-475c-8171-f9df62fa48c3.jpeg",
+    "https://assets.cdn.filesafe.space/Zyilin5HFiDuC461lVdk/media/83d686d2-8968-4b86-b2b4-3aac5d4e7fc5.jpeg",
+    "https://assets.cdn.filesafe.space/Zyilin5HFiDuC461lVdk/media/be1c7752-7f53-4ed5-892c-f11bd8f8ce15.jpeg",
+    "https://assets.cdn.filesafe.space/Zyilin5HFiDuC461lVdk/media/1344f04a-8c3a-4373-9817-530d235e16c3.jpeg",
+    "https://assets.cdn.filesafe.space/Zyilin5HFiDuC461lVdk/media/2e72e799-e29a-41f1-a0bc-386de0105c42.jpeg",
+    "https://assets.cdn.filesafe.space/Zyilin5HFiDuC461lVdk/media/85bb4396-2d26-4038-8715-2469d597a145.jpeg"
+  ];
+
+  var items = [];
+  var cursor = 0;
+  var renderedSinceCta = 0;
+  var loading = false;
+  var finished = false;
+  var observer = null;
+
+  function columnsNow() {
+    if (window.matchMedia("(max-width: 640px)").matches) return 1;
+    if (window.matchMedia("(max-width: 900px)").matches) return 2;
+    return 3;
+  }
+
+  function ctaEvery() {
+    return columnsNow() * 3;
+  }
+
+  function lastIsCta() {
+    var last = feed.lastElementChild;
+    return !!(last && last.classList.contains("euo-proof-cta-card"));
+  }
+
+  function createVideoCard(src) {
+    var article = document.createElement("article");
+    article.className = "euo-testimonial-card";
+    article.innerHTML =
+      '<div class="euo-testimonial-frame">' +
+        '<iframe src="' + src + '" loading="lazy" allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture;" allowfullscreen="true"></iframe>' +
+      '</div>';
+    return article;
+  }
+
+  function createImageCard(src) {
+    var article = document.createElement("article");
+    article.className = "euo-testimonial-card";
+    article.innerHTML =
+      '<div class="euo-testimonial-frame">' +
+        '<img src="' + src + '" alt="Rezultat člana" loading="lazy">' +
+      '</div>';
+    return article;
+  }
+
+  function createCard(item) {
+    return item.type === "video" ? createVideoCard(item.src) : createImageCard(item.src);
+  }
+
+  function appendCta() {
+    if (lastIsCta()) return;
+
+    var card = document.createElement("div");
+    card.className = "euo-proof-cta-card";
+    card.innerHTML =
+      '<img class="cta-rk" src="https://files.leadconnectorhq.com/file/6af47b361dee4a7aa106c784/ns-ikona-10-raketa-zajednicko-polijetanje.png" alt="" loading="lazy">' +
+      '<h3>Spreman si? Kreni\u00A0odmah.</h3>' +
+      '<a class="cta-btn" data-euo-cta href="' + stripe + '">' +
+        '<span data-euo-cta-text>Želim pristup odmah</span>' +
+      '</a>';
+
+    feed.appendChild(card);
+  }
+
+  function appendTailRow(count) {
+    var row = document.createElement("div");
+    row.className = "euo-tail-row";
+
+    for (var i = 0; i < count && cursor < items.length; i++) {
+      row.appendChild(createCard(items[cursor]));
+      cursor++;
+    }
+
+    feed.appendChild(row);
+  }
+
+  function finishFeed() {
+    appendCta();
+    finished = true;
+
+    if (observer) {
+      observer.disconnect();
+    }
+  }
+
+  function appendBatch() {
+    if (loading || finished) return;
+    loading = true;
+
+    var every = ctaEvery();
+
+    while (cursor < items.length) {
+      var remainingBefore = items.length - cursor;
+
+      if (remainingBefore > 0 && remainingBefore <= 4) {
+        appendTailRow(remainingBefore);
+        finishFeed();
+        loading = false;
+        return;
+      }
+
+      feed.appendChild(createCard(items[cursor]));
+      cursor++;
+      renderedSinceCta++;
+
+      var remainingAfter = items.length - cursor;
+
+      if (remainingAfter > 0 && remainingAfter <= 4) {
+        appendTailRow(remainingAfter);
+        finishFeed();
+        loading = false;
+        return;
+      }
+
+      if (renderedSinceCta >= every && remainingAfter > 0) {
+        appendCta();
+        renderedSinceCta = 0;
+        break;
+      }
+
+      if (renderedSinceCta >= every && remainingAfter === 0) {
+        finishFeed();
+        loading = false;
+        return;
+      }
+    }
+
+    if (cursor >= items.length) {
+      finishFeed();
+    }
+
+    loading = false;
+  }
+
+  function validateImage(src) {
+    return new Promise(function (resolve) {
+      var im = new Image();
+      var done = false;
+      var timer = setTimeout(function () {
+        if (!done) { done = true; resolve(false); }
+      }, 8000);
+      im.onload = function () {
+        if (!done) { done = true; clearTimeout(timer); resolve(true); }
+      };
+      im.onerror = function () {
+        if (!done) { done = true; clearTimeout(timer); resolve(false); }
+      };
+      im.src = src;
+    });
+  }
+
+  function startFeed(validImages) {
+    items = videos.map(function (src) {
+      return { type: "video", src: src };
+    }).concat(validImages.map(function (src) {
+      return { type: "image", src: src };
+    }));
+
+    appendBatch();
+
+    if ("IntersectionObserver" in window) {
+      observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) appendBatch();
+        });
+      }, { rootMargin: "900px 0px" });
+
+      observer.observe(sentinel);
+    } else {
+      window.addEventListener("scroll", function () {
+        var rect = sentinel.getBoundingClientRect();
+        if (rect.top < window.innerHeight + 900) appendBatch();
+      }, { passive: true });
+    }
+  }
+
+  Promise.all(images.map(validateImage)).then(function (results) {
+    var validImages = images.filter(function (_, i) { return results[i]; });
+    startFeed(validImages);
+  });
+})();
+</script>
+
+<script>
+/* Meta Pixel - Advanced Matching + konverzije.
+   Bazni pixel (fbq) ucitava GHL Tracking Code field - NE dodavati drugi bazni pixel ovdje. */
+(function () {
+  if (typeof fbq === 'undefined') return;
+  var p = new URLSearchParams(window.location.search);
+  var email = p.get('email') || p.get('Email') || p.get('em') || '';
+  var phone = p.get('phone') || p.get('Phone') || p.get('ph') || p.get('tel') || '';
+  var am = {};
+  if (email) am.em = email.trim().toLowerCase();
+  if (phone) am.ph = phone.replace(/[^0-9]/g, '');
+  if (am.em || am.ph) { fbq('init', '697410579446946', am); }
+  fbq('track', 'ViewContent');
+  document.addEventListener('click', function (e) {
+    var cta = e.target.closest && e.target.closest('[data-euo-cta]:not([data-euo-scroll])');
+    if (cta && !cta.classList.contains('is-expired')) { fbq('track', 'InitiateCheckout'); }
+  }, true);
+})();
+</script>
+
+<script>
+/* iPhone/iPad: bez automatskog zumiranja kad se klikne u polje za unos (i u iClosed kalendaru).
+   Radi samo na iOS uredjajima, na Androidu i desktopu se nista ne mijenja. */
+(function () {
+  var ua = navigator.userAgent || "";
+  var ios = /iPhone|iPad|iPod/.test(ua) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+  if (!ios) return;
+  var content = "width=device-width, initial-scale=1, maximum-scale=1";
+  function apply() {
+    var metas = document.querySelectorAll('meta[name="viewport"]');
+    if (!metas.length) {
+      var m = document.createElement("meta");
+      m.setAttribute("name", "viewport");
+      m.setAttribute("content", content);
+      document.head.appendChild(m);
+      return;
+    }
+    for (var i = 0; i < metas.length; i++) {
+      if (metas[i].getAttribute("content") !== content) metas[i].setAttribute("content", content);
+    }
+  }
+  apply();
+  document.addEventListener("DOMContentLoaded", apply);
+  window.addEventListener("load", apply);
+  document.addEventListener("click", function (e) {
+    if (e.target.closest && e.target.closest("[data-iclosed-link]")) apply();
+  }, true);
+})();
+</script>
+
+<!-- iClosed popup widget begin -->
+<script type="text/javascript" src="https://app.iclosed.io/assets/widget.js" async></script>
+<!-- iClosed popup widget end -->
+</body>
+</html>
