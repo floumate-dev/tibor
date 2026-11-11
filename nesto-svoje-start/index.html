@@ -110,8 +110,18 @@
   .eus .cd-num{ font-weight: 700; font-size: 30px; line-height: 1; letter-spacing: -.02em; font-variant-numeric: tabular-nums; color: #FFFFFF; }
   .eus .cd-unit{ margin-top: 7px; font-size: 10.5px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: #FF6B8A; }
 
-  /* ====================== PONUDA: dvije kartice (isti stil kao kartice na thank-you) ====================== */
-  .eus .offer{ display: grid; grid-template-columns: minmax(0, 400px) minmax(0, 1fr); gap: 22px; align-items: start; max-width: 1040px; margin: 56px auto 0; }
+  /* ====================== PONUDA: jedna velika kartica. Lijevo cijena i tajmer, desno lista, a dugme je skroz dole preko cijele sirine. ====================== */
+  .eus .offer{ max-width: 1040px; margin: 56px auto 0; }
+  .eus .offer.card{ padding: 34px 34px 30px; }
+  .eus .offer-grid{ display: grid; grid-template-columns: minmax(0, 380px) minmax(0, 1fr); gap: 34px; align-items: start; }
+  .eus .offer-cta{ margin-top: 30px; text-align: center; }
+  .eus .offer-cta .cta-btn{ min-height: 66px; font-size: 21px; animation-name: eusCtaPulseWide; }
+  /* siroko dugme pulsira blaze (vise sjajem nego velicinom), da ne izlazi iz linije sa sadrzajem iznad */
+  @keyframes eusCtaPulseWide{
+    0%, 100%{ scale: 1; box-shadow: 0 18px 48px rgba(107,242,107,.15), 0 0 0 0 rgba(107,242,107,0); }
+    50%{ scale: 1.012; box-shadow: 0 18px 48px rgba(107,242,107,.34), 0 0 30px 3px rgba(107,242,107,.36); }
+  }
+  @media (hover: hover) and (pointer: fine){ .eus .offer-cta .cta-btn:hover{ transform: scale(1.015); } }
   .eus .card{
     position: relative; overflow: hidden;
     border-radius: 26px; padding: 32px 28px 28px;
@@ -129,10 +139,9 @@
     background: linear-gradient(180deg, rgba(203,184,255,0) 0%, #CBB8FF 50%, rgba(203,184,255,0) 100%);
     box-shadow: 0 0 6px rgba(122,60,240,.45);
   }
-  @media (min-width: 901px){ .eus .card-price{ position: sticky; top: 76px; } }
 
-  /* lijeva kartica: cijena + dugmad */
-  .eus .card-price{ text-align: center; }
+  /* lijeva kolona: cijena + tajmer */
+  .eus .offer-price{ text-align: center; }
   .eus .kicker{ display: block; font-size: 13px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: #B9AED6; }
   .eus .kicker b{ color: var(--eu-green); font-weight: 700; }
   .eus .pp-prices{ display: flex; align-items: baseline; justify-content: center; gap: 14px; margin-top: 18px; flex-wrap: wrap; }
@@ -164,7 +173,6 @@
     -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
     filter: drop-shadow(0 6px 18px rgba(20,8,50,.45));
   }
-  .eus .card-price .cta-btn{ margin-top: 24px; }
   /* dugme ispod naslova postoji samo na telefonu i tabletu */
   .eus .hero-cta{ display: none; width: 100%; max-width: 440px; margin-top: 26px; }
 
@@ -172,8 +180,8 @@
      1) glavno zeleno dugme = placanje odjednom
      2) link ispod njega = placanje na 2 rate, sa ukupnim iznosom u zagradi (zagrada nije podvucena) */
   .eus .cta-alt{
-    display: block; width: fit-content; max-width: 100%; margin: 11px auto 0; text-align: center; cursor: pointer;
-    color: #CBB8FF !important; font-size: 15px; font-weight: 500; line-height: 1.3;
+    display: block; width: fit-content; max-width: 100%; margin: 14px auto 0; text-align: center; cursor: pointer;
+    color: #CBB8FF !important; font-size: 16px; font-weight: 500; line-height: 1.3;
     text-decoration: none !important; transition: color .25s ease;
   }
   /* podvucen je samo dio "2 rate po ...", rijec "Ili" nije */
@@ -184,7 +192,7 @@
   .eus .status{ margin-top: 14px; }
   .eus .status{ color: #9A90B8; font-size: 13.5px; line-height: 1.6; text-align: center; }
 
-  /* desna kartica: sta je u ponudi */
+  /* desna kolona: sta je u ponudi */
   .eus .value-stack{ list-style: none; display: grid; gap: 10px; }
   .eus .value-stack li{
     display: grid; grid-template-columns: 22px minmax(0, 1fr) auto; align-items: center; gap: 12px;
@@ -280,9 +288,13 @@
 
   /* ====================== RESPONSIVE ====================== */
   @media (max-width: 900px){
-    .eus .offer{ grid-template-columns: minmax(0, 1fr); max-width: 560px; margin-top: 44px; }
-    /* telefon i tablet: prvo lista (sta dobijas), pa kartica s cijenom i tajmerom */
-    .eus .card-list{ order: -1; }
+    .eus .offer{ max-width: 560px; margin-top: 44px; }
+    .eus .offer.card{ padding: 28px 24px 26px; }
+    .eus .offer-grid{ grid-template-columns: minmax(0, 1fr); gap: 28px; }
+    /* telefon i tablet: prvo lista (sta dobijas), pa cijena i tajmer, pa dugme */
+    .eus .offer-list{ order: -1; }
+    .eus .offer-cta{ margin-top: 26px; }
+    .eus .offer-cta .cta-btn{ min-height: 60px; font-size: 19px; }
     .eus .hero-cta{ display: inline-flex; }
     .eus .proof-sec{ padding-top: 84px; }
     .eus .call-sec{ padding-top: 72px; }
@@ -299,6 +311,10 @@
     .eus .hero{ padding-top: 40px; }
     .eus .badge{ font-size: 12px; padding: 8px 15px; }
     .eus .card{ padding: 26px 18px 22px; border-radius: 22px; }
+    .eus .offer.card{ padding: 22px 16px 22px; }
+    .eus .offer-grid{ gap: 24px; }
+    .eus .offer-cta{ margin-top: 22px; }
+    .eus .offer-cta .cta-btn{ min-height: 56px; font-size: 17px; animation-name: eusCtaPulseM; }
     .eus .pb-label{ font-size: clamp(16px, 5vw, 20px); }
     .eus .pb-num{ font-size: 64px; }
     .eus .cta-btn{ min-height: 52px; padding: 16px 20px; font-size: 16px; }
@@ -340,20 +356,18 @@
     <div class="hero">
       <span class="badge"><span class="dot"></span>Ponuda s izazova Nešto svoje</span>
       <h1 class="h1">Kompletan sustav koji koristi 6.000+ ljudi da zarađuju <span class="y">€228+/dnevno</span> od AI video editinga</h1>
-      <!-- samo na telefonu i tabletu: skroluje do kartice s cijenom i tajmerom (ne vodi na placanje) -->
+      <!-- samo na telefonu i tabletu: skroluje do cijene i tajmera (ne vodi na placanje) -->
       <a class="cta-btn hero-cta" data-euo-cta data-euo-scroll href="#cijena"><span data-euo-cta-text>Želim pristup odmah</span></a>
     </div>
 
-    <div class="offer">
-      <div class="card card-price" id="cijena">
-        <span class="glow" aria-hidden="true"></span><span class="line" aria-hidden="true"></span>
+    <div class="offer card">
+      <span class="glow" aria-hidden="true"></span><span class="line" aria-hidden="true"></span>
+      <div class="offer-grid">
+      <div class="offer-price" id="cijena">
         <div class="price-box">
           <span class="pb-label">Ukupna vrijednost: <s class="pb-old">€8.122</s></span>
           <span class="pb-num">€997</span>
         </div>
-
-        <a class="cta-btn" data-euo-cta href="https://buy.stripe.com/9B69ATaUlage2mjfZeasg1l"><span data-euo-cta-text>Želim pristup odmah</span></a>
-        <a class="cta-alt" data-euo-cta href="https://buy.stripe.com/9B6fZh1jLbki8KHaEUasg1m">Ili <span class="lnk">2 rate po €549</span> (ukupno&nbsp;€1.098)</a>
         <p class="cd-label" data-euo-timer-title>Brzi bonusi nestaju za</p>
         <div class="countdown" aria-label="Odbrojavanje ponude">
           <div class="cd-box"><div class="cd-num" data-euo-days>00</div><div class="cd-unit">Dana</div></div>
@@ -364,8 +378,7 @@
         <p class="status" data-euo-status>Nakon toga ostaje glavna ponuda do 15.11. u&nbsp;23:59.</p>
       </div>
 
-      <div class="card card-list">
-        <span class="glow" aria-hidden="true"></span><span class="line" aria-hidden="true"></span>
+      <div class="offer-list">
         <ul class="value-stack">
               <li><span class="vs-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg></span><span class="vs-label">AI VIDEO EDITOR Edukacija</span><span class="vs-value"><strong>€997</strong> vrijednost</span></li>
               <li><span class="vs-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg></span><span class="vs-label">AI EDITOR BOT</span><span class="vs-value"><strong>€1.247</strong> vrijednost</span></li>
@@ -389,6 +402,13 @@
             <span><strong>BRZI BONUS:</strong> 1:1 sa mnom - Prvih 8</span>
           </div>
         </div>
+      </div>
+      </div>
+
+      <!-- dugme je skroz dole, preko cijele sirine kartice; ispod njega link za placanje na rate -->
+      <div class="offer-cta">
+        <a class="cta-btn" data-euo-cta href="https://buy.stripe.com/9B69ATaUlage2mjfZeasg1l"><span data-euo-cta-text>Želim pristup odmah</span></a>
+        <a class="cta-alt" data-euo-cta href="https://buy.stripe.com/9B6fZh1jLbki8KHaEUasg1m">Ili <span class="lnk">2 rate po €549</span> (ukupno&nbsp;€1.098)</a>
       </div>
     </div>
 
